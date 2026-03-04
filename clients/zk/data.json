@@ -1,0 +1,450 @@
+{
+  "hashtag": "zkstory",
+  "challengeId": "7164316205070614555",
+  "challengeStartDate": "2026-02-25",
+  "profile": {
+    "name": "ZK",
+    "tiktok": "1.7M",
+    "instagram": "515K",
+    "youtube": "916K",
+    "snapchat": "1.2M",
+    "photo": "zk-photo.jpg"
+  },
+  "snapshots": [
+    {
+      "timestamp": "2026-02-25T09:00:00Z",
+      "views": 500000,
+      "videos": 41
+    },
+    {
+      "timestamp": "2026-02-26T09:00:00Z",
+      "views": 960000,
+      "videos": 305
+    },
+    {
+      "timestamp": "2026-02-27T09:00:00Z",
+      "views": 1034164,
+      "videos": 329
+    },
+    {
+      "timestamp": "2026-02-27T10:46:00Z",
+      "views": 1045876,
+      "videos": 337
+    },
+    {
+      "timestamp": "2026-02-27T16:34:47Z",
+      "views": 1472841,
+      "videos": 589
+    },
+    {
+      "timestamp": "2026-02-27T17:24:17Z",
+      "views": 1570682,
+      "videos": 597
+    },
+    {
+      "timestamp": "2026-02-27T18:51:24Z",
+      "views": 1790080,
+      "videos": 603
+    },
+    {
+      "timestamp": "2026-02-27T19:55:52Z",
+      "views": 2012215,
+      "videos": 606
+    },
+    {
+      "timestamp": "2026-02-27T21:33:25Z",
+      "views": 2287804,
+      "videos": 657
+    },
+    {
+      "timestamp": "2026-02-27T23:20:12Z",
+      "views": 2556796,
+      "videos": 661
+    },
+    {
+      "timestamp": "2026-02-28T00:47:49Z",
+      "views": 2726813,
+      "videos": 665
+    },
+    {
+      "timestamp": "2026-02-28T17:34:22Z",
+      "views": 4804383,
+      "videos": 867
+    },
+    {
+      "timestamp": "2026-02-28T17:45:15Z",
+      "views": 4890064,
+      "videos": 871
+    },
+    {
+      "timestamp": "2026-02-28T18:24:47Z",
+      "views": 5235298,
+      "videos": 890
+    },
+    {
+      "timestamp": "2026-02-28T19:17:16Z",
+      "views": 5660862,
+      "videos": 902
+    },
+    {
+      "timestamp": "2026-02-28T20:19:23Z",
+      "views": 6084196,
+      "videos": 918
+    },
+    {
+      "timestamp": "2026-02-28T21:15:17Z",
+      "views": 6517471,
+      "videos": 933
+    },
+    {
+      "timestamp": "2026-02-28T22:16:51Z",
+      "views": 7142231,
+      "videos": 937
+    },
+    {
+      "timestamp": "2026-02-28T23:16:25Z",
+      "views": 7814413,
+      "videos": 941
+    },
+    {
+      "timestamp": "2026-03-01T01:46:37Z",
+      "views": 9037691,
+      "videos": 955
+    },
+    {
+      "timestamp": "2026-03-01T04:17:28Z",
+      "views": 9470910,
+      "videos": 961
+    },
+    {
+      "timestamp": "2026-03-01T05:47:22Z",
+      "views": 9690452,
+      "videos": 962
+    },
+    {
+      "timestamp": "2026-03-01T06:38:12Z",
+      "views": 9787366,
+      "videos": 974
+    },
+    {
+      "timestamp": "2026-03-01T07:28:59Z",
+      "views": 9894777,
+      "videos": 985
+    },
+    {
+      "timestamp": "2026-03-01T08:23:42Z",
+      "views": 10038469,
+      "videos": 998
+    },
+    {
+      "timestamp": "2026-03-01T09:24:11Z",
+      "views": 10234247,
+      "videos": 1012
+    },
+    {
+      "timestamp": "2026-03-01T10:19:18Z",
+      "views": 10445266,
+      "videos": 1025
+    },
+    {
+      "timestamp": "2026-03-01T11:15:44Z",
+      "views": 10693839,
+      "videos": 1038
+    },
+    {
+      "timestamp": "2026-03-01T12:34:44Z",
+      "views": 11011378,
+      "videos": 1056
+    },
+    {
+      "timestamp": "2026-03-01T13:35:39Z",
+      "views": 11229291,
+      "videos": 1070
+    },
+    {
+      "timestamp": "2026-03-01T14:19:19Z",
+      "views": 11351233,
+      "videos": 1080
+    },
+    {
+      "timestamp": "2026-03-01T15:17:57Z",
+      "views": 11509317,
+      "videos": 1093
+    },
+    {
+      "timestamp": "2026-03-01T16:20:30Z",
+      "views": 11681115,
+      "videos": 1108
+    },
+    {
+      "timestamp": "2026-03-01T17:18:02Z",
+      "views": 11830545,
+      "videos": 1121
+    },
+    {
+      "timestamp": "2026-03-01T18:25:24Z",
+      "views": 12007610,
+      "videos": 1137
+    },
+    {
+      "timestamp": "2026-03-01T19:19:22Z",
+      "views": 12148926,
+      "videos": 1149
+    },
+    {
+      "timestamp": "2026-03-01T20:19:48Z",
+      "views": 12320162,
+      "videos": 1163
+    },
+    {
+      "timestamp": "2026-03-01T21:17:15Z",
+      "views": 12473865,
+      "videos": 1176
+    },
+    {
+      "timestamp": "2026-03-01T22:18:04Z",
+      "views": 12627026,
+      "videos": 1190
+    },
+    {
+      "timestamp": "2026-03-01T23:17:48Z",
+      "views": 12784200,
+      "videos": 1204
+    },
+    {
+      "timestamp": "2026-03-02T01:26:41Z",
+      "views": 13067491,
+      "videos": 1230
+    },
+    {
+      "timestamp": "2026-03-02T04:08:45Z",
+      "views": 13244600,
+      "videos": 1235
+    },
+    {
+      "timestamp": "2026-03-02T05:47:46Z",
+      "views": 13357953,
+      "videos": 1236
+    },
+    {
+      "timestamp": "2026-03-02T06:49:59Z",
+      "views": 13444302,
+      "videos": 1236
+    },
+    {
+      "timestamp": "2026-03-02T07:44:55Z",
+      "views": 13486646,
+      "videos": 1236
+    },
+    {
+      "timestamp": "2026-03-02T08:37:06Z",
+      "views": 13521988,
+      "videos": 1236
+    },
+    {
+      "timestamp": "2026-03-02T09:41:47Z",
+      "views": 13564853,
+      "videos": 1237
+    },
+    {
+      "timestamp": "2026-03-02T10:38:19Z",
+      "views": 13610533,
+      "videos": 1237
+    },
+    {
+      "timestamp": "2026-03-02T11:31:55Z",
+      "views": 13663306,
+      "videos": 1237
+    },
+    {
+      "timestamp": "2026-03-02T12:42:05Z",
+      "views": 13748964,
+      "videos": 1243
+    },
+    {
+      "timestamp": "2026-03-02T13:56:46Z",
+      "views": 13839504,
+      "videos": 1243
+    },
+    {
+      "timestamp": "2026-03-02T14:40:55Z",
+      "views": 13898697,
+      "videos": 1274
+    },
+    {
+      "timestamp": "2026-03-02T15:35:58Z",
+      "views": 13982904,
+      "videos": 1309
+    },
+    {
+      "timestamp": "2026-03-02T16:37:24Z",
+      "views": 14092962,
+      "videos": 1316
+    },
+    {
+      "timestamp": "2026-03-02T17:40:06Z",
+      "views": 14200890,
+      "videos": 1320
+    },
+    {
+      "timestamp": "2026-03-02T18:37:42Z",
+      "views": 14309175,
+      "videos": 1321
+    },
+    {
+      "timestamp": "2026-03-02T19:33:33Z",
+      "views": 14413363,
+      "videos": 1354
+    },
+    {
+      "timestamp": "2026-03-02T20:30:21Z",
+      "views": 14513895,
+      "videos": 1358
+    },
+    {
+      "timestamp": "2026-03-02T21:28:00Z",
+      "views": 14608370,
+      "videos": 1361
+    },
+    {
+      "timestamp": "2026-03-02T22:21:53Z",
+      "views": 14686835,
+      "videos": 1385
+    },
+    {
+      "timestamp": "2026-03-02T23:20:10Z",
+      "views": 14754656,
+      "videos": 1413
+    },
+    {
+      "timestamp": "2026-03-03T01:29:19Z",
+      "views": 14853397,
+      "videos": 1465
+    },
+    {
+      "timestamp": "2026-03-03T04:09:41Z",
+      "views": 14923513,
+      "videos": 1482
+    },
+    {
+      "timestamp": "2026-03-03T05:44:23Z",
+      "views": 14972526,
+      "videos": 1482
+    },
+    {
+      "timestamp": "2026-03-03T06:42:19Z",
+      "views": 15003448,
+      "videos": 1485
+    },
+    {
+      "timestamp": "2026-03-03T07:38:34Z",
+      "views": 15029472,
+      "videos": 1489
+    },
+    {
+      "timestamp": "2026-03-03T08:33:18Z",
+      "views": 15052158,
+      "videos": 1492
+    },
+    {
+      "timestamp": "2026-03-03T09:36:10Z",
+      "views": 15078187,
+      "videos": 1496
+    },
+    {
+      "timestamp": "2026-03-03T10:33:04Z",
+      "views": 15101145,
+      "videos": 1499
+    },
+    {
+      "timestamp": "2026-03-03T11:27:42Z",
+      "views": 15130633,
+      "videos": 1502
+    },
+    {
+      "timestamp": "2026-03-03T12:40:55Z",
+      "views": 15171299,
+      "videos": 1583
+    },
+    {
+      "timestamp": "2026-03-03T13:55:50Z",
+      "views": 15200853,
+      "videos": 1638
+    },
+    {
+      "timestamp": "2026-03-03T14:40:46Z",
+      "views": 15217151,
+      "videos": 1648
+    },
+    {
+      "timestamp": "2026-03-03T15:41:50Z",
+      "views": 15239301,
+      "videos": 1661
+    },
+    {
+      "timestamp": "2026-03-03T16:39:33Z",
+      "views": 15260235,
+      "videos": 1674
+    },
+    {
+      "timestamp": "2026-03-03T17:39:19Z",
+      "views": 15281913,
+      "videos": 1687
+    },
+    {
+      "timestamp": "2026-03-03T18:39:33Z",
+      "views": 15303761,
+      "videos": 1701
+    },
+    {
+      "timestamp": "2026-03-03T19:36:21Z",
+      "views": 15324363,
+      "videos": 1713
+    },
+    {
+      "timestamp": "2026-03-03T20:26:54Z",
+      "views": 15342698,
+      "videos": 1724
+    },
+    {
+      "timestamp": "2026-03-03T21:28:48Z",
+      "views": 15420992,
+      "videos": 1738
+    },
+    {
+      "timestamp": "2026-03-03T22:22:38Z",
+      "views": 15454382,
+      "videos": 1750
+    },
+    {
+      "timestamp": "2026-03-03T23:21:05Z",
+      "views": 15486256,
+      "videos": 1763
+    },
+    {
+      "timestamp": "2026-03-04T01:24:40Z",
+      "views": 15548833,
+      "videos": 1790
+    },
+    {
+      "timestamp": "2026-03-04T04:04:08Z",
+      "views": 15604983,
+      "videos": 1825
+    },
+    {
+      "timestamp": "2026-03-04T05:24:08Z",
+      "views": 15672294,
+      "videos": 1843
+    },
+    {
+      "timestamp": "2026-03-04T05:42:55Z",
+      "views": 15678691,
+      "videos": 1843
+    },
+    {
+      "timestamp": "2026-03-04T22:07:39Z",
+      "views": 16370574,
+      "videos": 1874
+    }
+  ]
+}

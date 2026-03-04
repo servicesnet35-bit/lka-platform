@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LKA Factory — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════════
+   LKA FACTORY PLATFORM — Futuriste / Glassmorphism / Neon
+   Multi-client unified dashboard
+   ═══════════════════════════════════════════════ */
+
+:root {
+    --bg:          #0B0F1A;
+    --surface:     #111827;
+    --surface2:    rgba(255, 255, 255, 0.04);
+    --surface3:    rgba(255, 255, 255, 0.07);
+    --border:      rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(99, 102, 241, 0.4);
+    --blue:        #3B82F6;
+    --blue-light:  #60A5FA;
+    --indigo:      #6366F1;
+    --purple:      #8B5CF6;
+    --violet:      #A78BFA;
+    --cyan:        #06B6D4;
+    --text:        #F1F5F9;
+    --text2:       #94A3B8;
+    --text3:       #475569;
+    --green:       #10B981;
+    --red:         #EF4444;
+    --amber:       #F59E0B;
+    --radius:      20px;
+    --radius-sm:   12px;
+    --glass:       rgba(17, 24, 39, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    --glow-blue:   rgba(59, 130, 246, 0.15);
+    --glow-purple: rgba(139, 92, 246, 0.15);
+    --glow-cyan:   rgba(6, 182, 212, 0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ═══ BACKGROUND EFFECTS ═══ */
+body::before {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+body::after {
+    content: '';
+    position: fixed;
+    bottom: -15%;
+    right: -5%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Subtle grid pattern */
+.bg-grid {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes pulse-neon {
+    0%, 100% { opacity: 1; box-shadow: 0 0 4px rgba(16, 185, 129, 0.6), 0 0 12px rgba(16, 185, 129, 0.3); }
+    50% { opacity: 0.7; box-shadow: 0 0 8px rgba(16, 185, 129, 0.8), 0 0 20px rgba(16, 185, 129, 0.4); }
+}
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.fade-in { animation: fadeInUp 0.6s ease-out both; }
+.fade-in-d1 { animation-delay: 0.05s; }
+.fade-in-d2 { animation-delay: 0.1s; }
+.fade-in-d3 { animation-delay: 0.15s; }
+.fade-in-d4 { animation-delay: 0.2s; }
+.fade-in-d5 { animation-delay: 0.25s; }
+.fade-in-d6 { animation-delay: 0.3s; }
+.fade-in-d7 { animation-delay: 0.35s; }
+.fade-in-d8 { animation-delay: 0.4s; }
+
+/* ═══ GLASS CARD (shared) ═══ */
+.glass-card {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 0 30px var(--glow-blue), 0 8px 32px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+}
+
+/* ═══ LOGIN PAGE ═══ */
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--bg);
+    position: relative;
+    z-index: 1;
+}
+.login-box {
+    background: var(--glass);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 56px 48px;
+    width: 420px;
+    text-align: center;
+    animation: fadeInUp 0.6s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+.login-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--purple), var(--cyan));
+    background-size: 200% 100%;
+    animation: gradient-shift 3s ease infinite;
+}
+.login-logo {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--blue), var(--purple), var(--cyan));
+    background-size: 200% 200%;
+    animation: gradient-shift 4s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+}
+.login-sub {
+    color: var(--text2);
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 36px;
+}
+.login-input {
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s;
+    margin-bottom: 20px;
+}
+.login-input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    background: rgba(255, 255, 255, 0.06);
+}
+.login-input::placeholder { color: var(--text3); }
+.login-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+.login-btn:hover {
+    box-shadow: 0 0 24px rgba(59, 130, 246, 0.4), 0 0 48px rgba(139, 92, 246, 0.2);
+    transform: translateY(-1px);
+}
+.login-btn:active { transform: translateY(0); }
+.login-error {
+    color: var(--red);
+    font-size: 13px;
+    margin-top: 16px;
+    display: none;
+}
+
+/* ═══ ADMIN SELECTOR ═══ */
+.admin-page {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--bg);
+    position: relative;
+    z-index: 1;
+}
+.admin-box {
+    background: var(--glass);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 56px 48px;
+    width: 480px;
+    text-align: center;
+    animation: fadeInUp 0.6s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+.admin-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--purple), var(--cyan));
+    background-size: 200% 100%;
+    animation: gradient-shift 3s ease infinite;
+}
+.admin-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--blue), var(--purple), var(--cyan));
+    background-size: 200% 200%;
+    animation: gradient-shift 4s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+}
+.admin-sub {
+    color: var(--text2);
+    font-size: 14px;
+    margin-bottom: 32px;
+}
+.admin-clients {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+.admin-client-btn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 24px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+}
+.admin-client-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--border-hover);
+    box-shadow: 0 0 20px var(--glow-blue);
+    transform: translateY(-2px);
+}
+.admin-client-btn .acb-name {
+    flex: 1;
+}
+.admin-client-btn .acb-hashtag {
+    color: var(--violet);
+    font-size: 13px;
+    font-weight: 400;
+}
+.admin-client-btn .acb-arrow {
+    color: var(--text3);
+    font-size: 18px;
+}
+.admin-logout {
+    background: none;
+    border: none;
+    color: var(--text3);
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.admin-logout:hover { color: var(--red); }
+
+/* ═══ DASHBOARD ═══ */
+.dashboard {
+    display: none;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 36px 32px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header */
+.dash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 36px;
+}
+.dash-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.dash-brand-name {
+    font-size: 22px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--blue), var(--purple), var(--cyan));
+    background-size: 200% 200%;
+    animation: gradient-shift 4s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+}
+.dash-brand-tag {
+    font-size: 12px;
+    color: var(--text3);
+    background: var(--surface2);
+    padding: 5px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--glass-border);
+    font-weight: 500;
+}
+.dash-header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.dash-updated {
+    font-size: 12px;
+    color: var(--text3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse-neon 2s infinite;
+}
+.logout-btn {
+    background: var(--surface2);
+    border: 1px solid var(--glass-border);
+    color: var(--text2);
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.logout-btn:hover {
+    border-color: rgba(239, 68, 68, 0.4);
+    color: var(--red);
+    box-shadow: 0 0 16px rgba(239, 68, 68, 0.1);
+}
+
+/* ═══ PROFILE SECTION ═══ */
+.profile-section {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+}
+.profile-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--purple), var(--cyan));
+    background-size: 200% 100%;
+    animation: gradient-shift 3s ease infinite;
+}
+.profile-photo {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(99, 102, 241, 0.3);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+    transition: all 0.3s;
+}
+.profile-photo:hover {
+    border-color: var(--blue);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.25);
+}
+.profile-info { flex: 1; }
+.profile-name {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+}
+.profile-hashtag {
+    font-size: 14px;
+    color: var(--violet);
+    font-weight: 500;
+}
+.profile-socials {
+    display: flex;
+    gap: 12px;
+}
+.social-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.social-badge:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--border-hover);
+    box-shadow: 0 0 20px var(--glow-blue);
+    transform: translateY(-2px) scale(1.03);
+}
+.social-badge .s-icon { width: 16px; height: 16px; flex-shrink: 0; }
+.social-badge .s-label {
+    color: var(--text3);
+    font-weight: 400;
+    font-size: 11px;
+}
+
+/* ═══ KPI GRID ═══ */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+}
+.kpi-card {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 28px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+.kpi-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    opacity: 0;
+    transition: opacity 0.35s;
+}
+.kpi-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 0 30px var(--glow-blue), 0 8px 32px rgba(0,0,0,0.25);
+    transform: translateY(-3px);
+}
+.kpi-card:hover::after { opacity: 1; }
+.kpi-card:nth-child(2):hover { box-shadow: 0 0 30px var(--glow-purple), 0 8px 32px rgba(0,0,0,0.25); }
+.kpi-card:nth-child(2)::after { background: linear-gradient(90deg, transparent, var(--purple), transparent); }
+.kpi-card:nth-child(3):hover { box-shadow: 0 0 30px var(--glow-cyan), 0 8px 32px rgba(0,0,0,0.25); }
+.kpi-card:nth-child(3)::after { background: linear-gradient(90deg, transparent, var(--cyan), transparent); }
+.kpi-card:nth-child(4):hover { box-shadow: 0 0 30px var(--glow-purple), 0 8px 32px rgba(0,0,0,0.25); }
+.kpi-card:nth-child(4)::after { background: linear-gradient(90deg, transparent, var(--violet), transparent); }
+
+.kpi-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+}
+.kpi-value {
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+}
+.kpi-value.blue { color: var(--blue-light); }
+.kpi-value.purple { color: var(--violet); }
+.kpi-delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 100px;
+}
+.kpi-delta.up { color: var(--green); background: rgba(16, 185, 129, 0.1); }
+.kpi-delta.down { color: var(--red); background: rgba(239, 68, 68, 0.1); }
+.kpi-delta.neutral { color: var(--text3); background: rgba(255, 255, 255, 0.04); }
+
+/* Heat Gauge */
+.heat-gauge-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+}
+.heat-bar {
+    flex: 1;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.heat-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.heat-fill.cold { background: var(--red); box-shadow: 0 0 8px rgba(239, 68, 68, 0.3); }
+.heat-fill.warm { background: var(--amber); box-shadow: 0 0 8px rgba(245, 158, 11, 0.3); }
+.heat-fill.hot {
+    background: linear-gradient(90deg, var(--blue), var(--purple));
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+}
+
+/* ═══ CHARTS ═══ */
+.charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 28px;
+}
+.chart-card {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 28px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.chart-card:hover {
+    border-color: rgba(99, 102, 241, 0.25);
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.06);
+}
+.chart-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.chart-title span {
+    color: var(--text3);
+    font-size: 11px;
+    font-weight: 400;
+    background: var(--surface2);
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--glass-border);
+}
+.chart-wrap { position: relative; height: 260px; }
+
+/* ═══ FOOTER ═══ */
+.dash-footer {
+    text-align: center;
+    padding: 32px 0;
+    color: var(--text3);
+    font-size: 12px;
+    font-weight: 400;
+}
+.dash-footer .brand-accent {
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 1100px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+    .dashboard { padding: 20px 16px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .charts-row { grid-template-columns: 1fr; gap: 16px; }
+    .profile-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 28px 24px;
+    }
+    .profile-socials { flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .social-badge { padding: 8px 14px; font-size: 12px; }
+    .kpi-value { font-size: 26px; }
+    .kpi-card { padding: 22px; }
+    .chart-card { padding: 20px; }
+    .chart-wrap { height: 280px; }
+    .chart-title { font-size: 15px; font-weight: 700; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+    .chart-title span { font-size: 10px; }
+    .dash-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+    .dash-header-right { width: 100%; justify-content: space-between; }
+    .dash-brand-name { font-size: 18px; }
+    .profile-name { font-size: 20px; }
+    .profile-hashtag { font-size: 13px; }
+    .kpi-label { font-size: 10px; }
+    .kpi-delta { font-size: 11px; }
+    .dash-footer { font-size: 11px; padding: 24px 0; }
+    .login-box { width: 90%; padding: 40px 28px; }
+    .admin-box { width: 90%; padding: 40px 28px; }
+}
+@media (max-width: 480px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .login-box { width: 92%; padding: 36px 24px; }
+    .login-logo { font-size: 26px; }
+    .chart-wrap { height: 260px; }
+    .chart-card { padding: 16px; }
+    .kpi-value { font-size: 24px; }
+    .kpi-card { padding: 18px; }
+    .charts-row { gap: 14px; }
+    .dashboard { padding: 16px 12px; }
+    .profile-section { padding: 24px 16px; gap: 16px; }
+    .social-badge { padding: 7px 12px; font-size: 11px; }
+    .social-badge .s-label { font-size: 10px; }
+    .social-badge .s-icon { width: 14px; height: 14px; }
+    .admin-box { width: 92%; padding: 36px 24px; }
+    .admin-client-btn { padding: 14px 18px; font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Background Grid -->
+<div class="bg-grid"></div>
+
+<!-- SVG Icon Templates (hidden, cloned via JS) -->
+<div style="display:none" id="svgTemplates">
+    <svg id="icon-tiktok" class="s-icon" viewBox="0 0 24 24" fill="#fff"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+    <svg id="icon-instagram" class="s-icon" viewBox="0 0 24 24" fill="#E4405F"><path d="M7.03.084c-1.277.06-2.149.264-2.911.563C3.33.95 2.66 1.364 1.996 2.03 1.33 2.698.918 3.367.612 4.156.318 4.795.117 5.793.06 7.07.006 8.348-.006 8.758 0 12.017c.006 3.259.02 3.667.082 4.947.061 1.277.264 2.149.563 2.911.308.789.72 1.457 1.388 2.123.666.655 1.336 1.074 2.126 1.38.764.295 1.636.496 2.913.552 1.278.056 1.689.069 4.947.063 3.258-.006 3.668-.021 4.948-.081 1.28-.061 2.147-.265 2.91-.563.789-.309 1.458-.72 2.123-1.388.665-.668 1.074-1.338 1.38-2.128.295-.764.496-1.636.551-2.913.056-1.28.07-1.69.064-4.948-.006-3.258-.021-3.667-.082-4.947-.06-1.28-.264-2.148-.563-2.91-.308-.79-.72-1.458-1.388-2.123C21.298 1.33 20.628.918 19.838.613c-.764-.296-1.636-.497-2.913-.552C15.647.005 15.236-.008 11.977.001 8.718.008 8.31.022 7.03.084m.14 21.693c-1.17-.05-1.805-.245-2.228-.408-.56-.216-.96-.477-1.382-.895-.422-.418-.681-.819-.9-1.378-.164-.424-.362-1.058-.417-2.228-.06-1.265-.072-1.644-.08-4.848-.006-3.204.006-3.583.062-4.848.05-1.17.245-1.805.408-2.228.216-.561.476-.96.895-1.382.418-.422.819-.681 1.378-.9.424-.165 1.058-.363 2.227-.417 1.266-.06 1.645-.072 4.848-.08 3.204-.006 3.584.006 4.849.062 1.17.05 1.806.245 2.229.408.56.216.96.476 1.381.895.422.419.682.819.9 1.378.165.424.363 1.058.418 2.227.06 1.266.072 1.645.079 4.848.007 3.204-.005 3.583-.061 4.848-.051 1.17-.245 1.806-.408 2.23-.216.56-.477.96-.896 1.381-.418.422-.818.682-1.378.9-.423.165-1.057.363-2.226.418-1.266.06-1.645.072-4.85.079-3.204.007-3.582-.005-4.848-.061M16.953 5.587A1.44 1.44 0 1018.39 4.144a1.44 1.44 0 00-1.437 1.443M5.838 12.012a6.18 6.18 0 106.174 6.15 6.17 6.17 0 00-6.174-6.15M8 12.008a4 4 0 114.008 3.992A3.9996 3.9996 0 018 12.008"/></svg>
+    <svg id="icon-youtube" class="s-icon" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    <svg id="icon-snapchat" class="s-icon" viewBox="0 0 24 24" fill="#FFFC00"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></svg>
+</div>
+
+<!-- ═══ LOGIN ═══ -->
+<div class="login-page" id="loginPage">
+    <div class="login-box">
+        <div class="login-logo">LKA Factory</div>
+        <div class="login-sub">Espace client &mdash; Dashboard campagne</div>
+        <input type="password" class="login-input" id="loginPassword" placeholder="Mot de passe" autofocus>
+        <button class="login-btn" id="loginBtn">Se connecter</button>
+        <div class="login-error" id="loginError">Mot de passe incorrect</div>
+    </div>
+</div>
+
+<!-- ═══ ADMIN CLIENT SELECTOR ═══ -->
+<div class="admin-page" id="adminPage">
+    <div class="admin-box">
+        <div class="admin-title">LKA Factory</div>
+        <div class="admin-sub">S&#233;lectionner un client</div>
+        <div class="admin-clients" id="adminClients"></div>
+        <button class="admin-logout" id="adminLogout">D&#233;connexion</button>
+    </div>
+</div>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div class="dashboard" id="dashboard">
+
+    <!-- Header -->
+    <div class="dash-header fade-in">
+        <div class="dash-brand">
+            <div class="dash-brand-name" id="dashBrandName"></div>
+            <div class="dash-brand-tag" id="dashBrandTag"></div>
+            <div class="dash-brand-tag" id="dashBrandDate"></div>
+        </div>
+        <div class="dash-header-right">
+            <div class="dash-updated">
+                <div class="live-dot"></div>
+                <span id="lastUpdate">Chargement...</span>
+            </div>
+            <button class="logout-btn" id="logoutBtn">D&#233;connexion</button>
+        </div>
+    </div>
+
+    <!-- Profile -->
+    <div class="profile-section fade-in fade-in-d1">
+        <img class="profile-photo" id="profilePhoto" src="" alt="">
+        <div class="profile-info">
+            <div class="profile-name" id="profileName"></div>
+            <div class="profile-hashtag" id="profileHashtag"></div>
+        </div>
+        <div class="profile-socials" id="profileSocials"></div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+        <div class="kpi-card fade-in fade-in-d2">
+            <div class="kpi-label" id="kpiViewsLabel">Vues campagne</div>
+            <div class="kpi-value blue" id="kpiViews">&mdash;</div>
+            <div class="kpi-delta neutral" id="kpiViewsDelta">&mdash;</div>
+        </div>
+        <div class="kpi-card fade-in fade-in-d3">
+            <div class="kpi-label" id="kpiClipsLabel">Clips campagne</div>
+            <div class="kpi-value" id="kpiClips">&mdash;</div>
+            <div class="kpi-delta neutral" id="kpiClipsDelta">&mdash;</div>
+        </div>
+        <div class="kpi-card fade-in fade-in-d4">
+            <div class="kpi-label">Score chaleur</div>
+            <div class="kpi-value purple" id="kpiHeat">&mdash;</div>
+            <div class="heat-gauge-container">
+                <div class="heat-bar">
+                    <div class="heat-fill hot" id="heatFill" style="width:0%"></div>
+                </div>
+                <span style="font-size:11px;color:var(--text3);font-weight:500" id="heatLabel">&mdash;</span>
+            </div>
+        </div>
+        <div class="kpi-card fade-in fade-in-d5">
+            <div class="kpi-label" id="kpi4Label">Moyenne vues / clip</div>
+            <div class="kpi-value" id="kpi4Value">&mdash;</div>
+            <div class="kpi-delta neutral" id="kpi4Delta">&mdash;</div>
+        </div>
+    </div>
+
+    <!-- Charts — Cumules -->
+    <div class="charts-row">
+        <div class="chart-card fade-in fade-in-d6">
+            <div class="chart-title">
+                Vues cumul&#233;es
+                <span>Actualisation toutes les heures</span>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="viewsChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card fade-in fade-in-d6">
+            <div class="chart-title">
+                Posts cumul&#233;s
+                <span>Actualisation toutes les heures</span>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="postsChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts — Par heure -->
+    <div class="charts-row">
+        <div class="chart-card fade-in fade-in-d7">
+            <div class="chart-title">
+                Vues par heure
+                <span>Actualisation toutes les heures</span>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="viewsDeltaChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card fade-in fade-in-d8">
+            <div class="chart-title">
+                Posts par heure
+                <span>Actualisation toutes les heures</span>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="postsDeltaChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="dash-footer fade-in fade-in-d8" id="dashFooter"></div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   LKA FACTORY PLATFORM — Multi-client dashboard
+   Auth + Data + Charts — Dynamic client rendering
+   All DOM manipulation uses safe methods (textContent, createElement, cloneNode)
+   SVG icons are cloned from hidden templates — no innerHTML with user data
+   ═══════════════════════════════════════════════ */
+
+// ═══ CLIENT CONFIGURATIONS ═══
+// All values here are hardcoded trusted config — never from user input
+var CLIENTS = {
+    'zk2026': {
+        id: 'zk',
+        name: 'ZK',
+        campaignName: 'ZK Campaign',
+        hashtag: '#zkstory',
+        startDate: '2026-02-26',
+        dataPath: 'clients/zk/data.json',
+        photo: 'clients/zk/zk-photo.jpg',
+        dataFormat: 'simple',
+        socials: [
+            { platform: 'TikTok', url: 'https://www.tiktok.com/@zkisbackspam', stat: '1.7M', icon: 'tiktok' },
+            { platform: 'Instagram', url: 'https://www.instagram.com/zkmusique', stat: '515K', icon: 'instagram' },
+            { platform: 'YouTube', url: 'https://www.youtube.com/@iam-zk', stat: '916K', icon: 'youtube' },
+            { platform: 'Snapchat', url: 'https://www.snapchat.com/add/zkmusique', stat: '1.2M', icon: 'snapchat' }
+        ]
+    },
+    'franglish2026': {
+        id: 'franglish',
+        name: 'Franglish',
+        campaignName: 'LOVE & SUGAR',
+        hashtag: '#franglishstory',
+        hashtagGeneral: '#franglish',
+        startDate: '2026-03-04',
+        dataPath: 'clients/franglish/data.json',
+        photo: 'clients/franglish/franglish-photo.jpg',
+        dataFormat: 'multi',
+        dataKey: 'franglishstory',
+        generalKey: 'franglish',
+        socials: [
+            { platform: 'TikTok', url: 'https://www.tiktok.com/@franlouch', stat: '@franlouch', icon: 'tiktok' },
+            { platform: 'Instagram', url: 'https://www.instagram.com/franglish_', stat: '@franglish_', icon: 'instagram' },
+            { platform: 'YouTube', url: 'https://www.youtube.com/@Franglish', stat: 'Franglish', icon: 'youtube' }
+        ]
+    },
+    'lka-admin': {
+        admin: true
+    }
+};
+
+// ═══ CURRENT STATE ═══
+var currentClient = null;
+
+// ═══ AUTH ═══
+var STORAGE_KEY = 'lka-platform-session';
+
+function checkAuth() {
+    var session = localStorage.getItem(STORAGE_KEY);
+    if (session && CLIENTS[session]) {
+        handleLogin(session);
+    }
+}
+
+function login() {
+    var pwd = document.getElementById('loginPassword').value;
+    if (CLIENTS[pwd]) {
+        localStorage.setItem(STORAGE_KEY, pwd);
+        handleLogin(pwd);
+    } else {
+        document.getElementById('loginError').style.display = 'block';
+    }
+}
+
+function handleLogin(pwd) {
+    var client = CLIENTS[pwd];
+    if (client.admin) {
+        showAdminSelector();
+    } else {
+        currentClient = client;
+        showDashboard();
+    }
+}
+
+function showAdminSelector() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('adminPage').style.display = 'flex';
+
+    var container = document.getElementById('adminClients');
+    // Clear existing children safely
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+
+    Object.keys(CLIENTS).forEach(function(key) {
+        var c = CLIENTS[key];
+        if (c.admin) return;
+
+        var btn = document.createElement('button');
+        btn.className = 'admin-client-btn';
+
+        var nameSpan = document.createElement('span');
+        nameSpan.className = 'acb-name';
+        nameSpan.textContent = c.name;
+
+        var hashtagSpan = document.createElement('span');
+        hashtagSpan.className = 'acb-hashtag';
+        hashtagSpan.textContent = c.hashtag;
+
+        var arrowSpan = document.createElement('span');
+        arrowSpan.className = 'acb-arrow';
+        arrowSpan.textContent = '\u2192';
+
+        btn.appendChild(nameSpan);
+        btn.appendChild(hashtagSpan);
+        btn.appendChild(arrowSpan);
+
+        btn.addEventListener('click', function() {
+            currentClient = c;
+            document.getElementById('adminPage').style.display = 'none';
+            showDashboard();
+        });
+        container.appendChild(btn);
+    });
+}
+
+function logout() {
+    localStorage.removeItem(STORAGE_KEY);
+    currentClient = null;
+    destroyCharts();
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('adminPage').style.display = 'none';
+    document.getElementById('loginError').style.display = 'none';
+    document.getElementById('loginPassword').value = '';
+}
+
+function showDashboard() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('adminPage').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+
+    document.title = currentClient.campaignName + ' \u2014 Dashboard';
+
+    setupDashboardUI();
+    loadData();
+}
+
+function setupDashboardUI() {
+    var c = currentClient;
+
+    // Header
+    document.getElementById('dashBrandName').textContent = c.campaignName;
+    document.getElementById('dashBrandTag').textContent = c.hashtag;
+
+    var startParts = c.startDate.split('-');
+    document.getElementById('dashBrandDate').textContent = 'Depuis le ' + startParts[2] + '/' + startParts[1];
+
+    // Profile
+    document.getElementById('profilePhoto').src = c.photo;
+    document.getElementById('profilePhoto').alt = c.name;
+    document.getElementById('profileName').textContent = c.name;
+    document.getElementById('profileHashtag').textContent = c.hashtag;
+
+    // Social badges — built with DOM methods + cloned SVG templates
+    var socialsContainer = document.getElementById('profileSocials');
+    while (socialsContainer.firstChild) {
+        socialsContainer.removeChild(socialsContainer.firstChild);
+    }
+    c.socials.forEach(function(s) {
+        var a = document.createElement('a');
+        a.className = 'social-badge';
+        a.href = s.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+
+        // Clone SVG icon from hidden template
+        var iconTemplate = document.getElementById('icon-' + s.icon);
+        if (iconTemplate) {
+            var iconClone = iconTemplate.cloneNode(true);
+            iconClone.removeAttribute('id');
+            a.appendChild(iconClone);
+        }
+
+        var statSpan = document.createElement('span');
+        statSpan.textContent = s.stat;
+        a.appendChild(statSpan);
+
+        var labelSpan = document.createElement('span');
+        labelSpan.className = 's-label';
+        labelSpan.textContent = s.platform;
+        a.appendChild(labelSpan);
+
+        socialsContainer.appendChild(a);
+    });
+
+    // KPI labels
+    document.getElementById('kpiViewsLabel').textContent = 'Vues campagne';
+    document.getElementById('kpiClipsLabel').textContent = 'Clips campagne';
+
+    if (c.hashtagGeneral) {
+        document.getElementById('kpi4Label').textContent = 'Vues ' + c.hashtagGeneral;
+    } else {
+        document.getElementById('kpi4Label').textContent = 'Moyenne vues / clip';
+    }
+
+    // Footer — built with DOM methods
+    var footer = document.getElementById('dashFooter');
+    while (footer.firstChild) {
+        footer.removeChild(footer.firstChild);
+    }
+    footer.appendChild(document.createTextNode(c.name + ' Campaign Dashboard \u2014 Propuls\u00e9 par '));
+    var brandSpan = document.createElement('span');
+    brandSpan.className = 'brand-accent';
+    brandSpan.textContent = 'LKA Factory';
+    footer.appendChild(brandSpan);
+    footer.appendChild(document.createTextNode(' \u2014 Donn\u00e9es actualis\u00e9es toutes les heures'));
+}
+
+// ═══ EVENT LISTENERS ═══
+document.getElementById('loginBtn').addEventListener('click', login);
+document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') login();
+});
+document.getElementById('logoutBtn').addEventListener('click', logout);
+document.getElementById('adminLogout').addEventListener('click', logout);
+
+// ═══ HELPERS ═══
+function formatNum(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1).replace('.0', '') + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(1).replace('.0', '') + 'K';
+    return n.toLocaleString('fr-FR');
+}
+
+function formatDelta(n) {
+    return (n >= 0 ? '+' : '') + formatNum(Math.abs(n));
+}
+
+function timeAgo(ts) {
+    var diff = Date.now() - new Date(ts).getTime();
+    var h = Math.floor(diff / 3600000);
+    var m = Math.floor(diff / 60000);
+    if (h > 24) return 'il y a ' + Math.floor(h / 24) + 'j';
+    if (h > 0) return 'il y a ' + h + 'h';
+    if (m > 0) return 'il y a ' + m + 'min';
+    return "a l'instant";
+}
+
+// ═══ DATA EXTRACTION HELPERS ═══
+function getViews(snap, client) {
+    if (client.dataFormat === 'multi') return snap[client.dataKey].views;
+    return snap.views;
+}
+
+function getVideos(snap, client) {
+    if (client.dataFormat === 'multi') return snap[client.dataKey].videos;
+    return snap.videos;
+}
+
+function getGeneralViews(snap, client) {
+    if (client.generalKey) return snap[client.generalKey].views;
+    return null;
+}
+
+// ═══ LOAD DATA ═══
+async function loadData() {
+    var c = currentClient;
+    try {
+        var res = await fetch(c.dataPath + '?' + Date.now());
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var data = await res.json();
+        renderDashboard(data);
+    } catch(e) {
+        console.warn('Fetch failed:', e.message);
+        document.getElementById('lastUpdate').textContent = 'Donn\u00e9es indisponibles';
+    }
+}
+
+// ═══ RENDER DASHBOARD ═══
+function renderDashboard(data) {
+    var c = currentClient;
+    var snaps = data.snapshots;
+    var latest = snaps[snaps.length - 1];
+
+    // Last update
+    document.getElementById('lastUpdate').textContent = 'Mis \u00e0 jour ' + timeAgo(latest.timestamp);
+
+    // Get campaign views/videos from latest snapshot
+    var campaignViews = getViews(latest, c);
+    var campaignVideos = getVideos(latest, c);
+
+    // KPI 1: Vues campagne
+    document.getElementById('kpiViews').textContent = campaignViews.toLocaleString('fr-FR');
+    document.getElementById('kpiViewsDelta').textContent = 'vues cumul\u00e9es';
+    document.getElementById('kpiViewsDelta').className = 'kpi-delta neutral';
+
+    // KPI 2: Clips campagne
+    document.getElementById('kpiClips').textContent = campaignVideos.toLocaleString('fr-FR');
+    document.getElementById('kpiClipsDelta').textContent = 'clips au total';
+    document.getElementById('kpiClipsDelta').className = 'kpi-delta neutral';
+
+    // KPI 3: Heat score — 48h rolling average
+    var heat = 5;
+    if (snaps.length >= 2) {
+        var nowMs = new Date(latest.timestamp).getTime();
+        var h48ago = nowMs - 172800000;
+        var refSnap = snaps[0];
+        for (var si = snaps.length - 1; si >= 0; si--) {
+            if (new Date(snaps[si].timestamp).getTime() <= h48ago) { refSnap = snaps[si]; break; }
+        }
+        var refViews = getViews(refSnap, c);
+        var dtH = (nowMs - new Date(refSnap.timestamp).getTime()) / 3600000;
+        var viewsPerDay = dtH > 0 ? (campaignViews - refViews) * (24 / dtH) : 0;
+        if (viewsPerDay >= 3000000) heat = 10;
+        else if (viewsPerDay >= 2000000) heat = 9;
+        else if (viewsPerDay >= 1000000) heat = 8;
+        else if (viewsPerDay >= 500000) heat = 7;
+        else if (viewsPerDay >= 200000) heat = 6;
+        else if (viewsPerDay >= 80000) heat = 5;
+        else if (viewsPerDay >= 30000) heat = 4;
+        else if (viewsPerDay >= 5000) heat = 3;
+        else heat = 2;
+    }
+    document.getElementById('kpiHeat').textContent = heat + '/10';
+    var hf = document.getElementById('heatFill');
+    hf.style.width = (heat * 10) + '%';
+    hf.className = 'heat-fill ' + (heat <= 3 ? 'cold' : heat <= 6 ? 'warm' : 'hot');
+    document.getElementById('heatLabel').textContent = heat <= 3 ? 'Froid' : heat <= 6 ? 'Ti\u00e8de' : 'Chaud';
+
+    // KPI 4: General hashtag views OR average views/clip
+    if (c.hashtagGeneral) {
+        var generalViews = getGeneralViews(latest, c);
+        if (generalViews !== null) {
+            document.getElementById('kpi4Value').textContent = generalViews.toLocaleString('fr-FR');
+            document.getElementById('kpi4Delta').textContent = 'vues totales ' + c.hashtagGeneral;
+            document.getElementById('kpi4Delta').className = 'kpi-delta neutral';
+        }
+    } else {
+        var ratio = campaignVideos > 0 ? Math.round(campaignViews / campaignVideos) : 0;
+        document.getElementById('kpi4Value').textContent = ratio.toLocaleString('fr-FR');
+        document.getElementById('kpi4Delta').textContent = 'moyenne par clip';
+        document.getElementById('kpi4Delta').className = 'kpi-delta up';
+    }
+
+    // Render all charts
+    renderViewsChart(snaps);
+    renderPostsChart(snaps);
+    renderViewsDeltaChart(snaps);
+    renderPostsDeltaChart(snaps);
+}
+
+// ═══ CHART PLUGIN — Last value label ═══
+var lastValuePlugin = {
+    id: 'lastValue',
+    afterDraw: function(chart) {
+        var dataset = chart.data.datasets[0];
+        var meta = chart.getDatasetMeta(0);
+        if (!meta.data.length) return;
+        var lastIdx = -1;
+        for (var i = dataset.data.length - 1; i >= 0; i--) {
+            if (dataset.data[i] !== null && dataset.data[i] !== undefined) {
+                lastIdx = i;
+                break;
+            }
+        }
+        if (lastIdx < 0) return;
+        var lastPoint = meta.data[lastIdx];
+        var lastVal = dataset.data[lastIdx];
+        if (!lastPoint || lastVal === null) return;
+        var ctx = chart.ctx;
+        ctx.save();
+        ctx.font = 'bold 14px Inter, sans-serif';
+        ctx.fillStyle = dataset.borderColor;
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(lastVal.toLocaleString('fr-FR'), lastPoint.x, lastPoint.y - 8);
+        ctx.restore();
+    }
+};
+
+// ═══ DAILY TOTALS — filtered by startDate ═══
+function getDailyTotals(snaps) {
+    var c = currentClient;
+    var days = {};
+    snaps.forEach(function(s) {
+        var day = s.timestamp.split('T')[0];
+        if (day < c.startDate) return;
+        if (!days[day] || s.timestamp > days[day].timestamp) {
+            days[day] = s;
+        }
+    });
+    var sorted = Object.keys(days).sort();
+    return sorted.map(function(day) {
+        var d = new Date(day + 'T00:00:00');
+        return {
+            label: d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }),
+            views: getViews(days[day], c),
+            videos: getVideos(days[day], c)
+        };
+    });
+}
+
+// ═══ HOURLY DELTAS ═══
+function getHourlyDeltas(snaps) {
+    var c = currentClient;
+    if (snaps.length < 2) return [];
+
+    var recent = snaps.slice(-10);
+
+    var now = new Date();
+    var todayStr = String(now.getDate()).padStart(2, '0') + '/' + String(now.getMonth() + 1).padStart(2, '0');
+
+    var result = [];
+    for (var i = 1; i < recent.length; i++) {
+        var curr = recent[i];
+        var prev = recent[i - 1];
+        var d = new Date(curr.timestamp);
+        var dayStr = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0');
+        var hourStr = String(d.getHours()).padStart(2, '0') + 'h' + String(d.getMinutes()).padStart(2, '0');
+
+        var label;
+        if (dayStr === todayStr) {
+            label = hourStr;
+        } else {
+            var yesterday = new Date(now.getTime() - 86400000);
+            var yesterdayStr = String(yesterday.getDate()).padStart(2, '0') + '/' + String(yesterday.getMonth() + 1).padStart(2, '0');
+            if (dayStr === yesterdayStr) {
+                label = 'Hier ' + String(d.getHours()).padStart(2, '0') + 'h';
+            } else {
+                label = dayStr + ' ' + String(d.getHours()).padStart(2, '0') + 'h';
+            }
+        }
+
+        result.push({
+            label: label,
+            views: getViews(curr, c) - getViews(prev, c),
+            videos: getVideos(curr, c) - getVideos(prev, c),
+            totalViews: getViews(curr, c),
+            totalVideos: getVideos(curr, c)
+        });
+    }
+    return result;
+}
+
+// ═══ DESTROY CHARTS ═══
+function destroyCharts() {
+    if (window._vc) { window._vc.destroy(); window._vc = null; }
+    if (window._pc) { window._pc.destroy(); window._pc = null; }
+    if (window._vdc) { window._vdc.destroy(); window._vdc = null; }
+    if (window._pdc) { window._pdc.destroy(); window._pdc = null; }
+}
+
+// ═══ CHART: Cumulative Views ═══
+function renderViewsChart(snaps) {
+    var ctx = document.getElementById('viewsChart').getContext('2d');
+    var daily = getDailyTotals(snaps);
+    var labels = ['0'].concat(daily.map(function(d) { return d.label; }));
+    var values = [0].concat(daily.map(function(d) { return d.views; }));
+
+    var gradient = ctx.createLinearGradient(0, 0, 0, 260);
+    gradient.addColorStop(0, 'rgba(59, 130, 246, 0.3)');
+    gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+
+    if (window._vc) window._vc.destroy();
+    window._vc = new Chart(ctx, {
+        type: 'line',
+        plugins: [lastValuePlugin],
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Vues',
+                data: values,
+                borderColor: '#60A5FA',
+                backgroundColor: gradient,
+                fill: true,
+                tension: 0.3,
+                borderWidth: 3,
+                pointRadius: 5,
+                pointBackgroundColor: '#60A5FA',
+                pointBorderColor: '#0B0F1A',
+                pointBorderWidth: 2,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: { top: 30 } },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                    borderColor: 'rgba(59, 130, 246, 0.4)',
+                    borderWidth: 1,
+                    titleFont: { family: 'Inter', size: 12, weight: '600' },
+                    bodyFont: { family: 'Inter', size: 13, weight: '700' },
+                    padding: 12,
+                    cornerRadius: 10,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(item) { return item.raw.toLocaleString('fr-FR') + ' vues'; }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#475569', font: { size: 11, weight: '600' } }
+                },
+                y: {
+                    min: 0,
+                    grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false },
+                    ticks: { color: '#475569', font: { size: 11, weight: '500' }, callback: function(v) { return v >= 1000000 ? (v/1000000).toFixed(1) + 'M' : v >= 1000 ? Math.round(v/1000) + 'K' : v; } }
+                }
+            }
+        }
+    });
+}
+
+// ═══ CHART: Cumulative Posts ═══
+function renderPostsChart(snaps) {
+    var ctx = document.getElementById('postsChart').getContext('2d');
+    var daily = getDailyTotals(snaps);
+    var labels = ['0'].concat(daily.map(function(d) { return d.label; }));
+    var values = [0].concat(daily.map(function(d) { return d.videos; }));
+
+    var gradient = ctx.createLinearGradient(0, 0, 0, 260);
+    gradient.addColorStop(0, 'rgba(139, 92, 246, 0.3)');
+    gradient.addColorStop(1, 'rgba(139, 92, 246, 0)');
+
+    if (window._pc) window._pc.destroy();
+    window._pc = new Chart(ctx, {
+        type: 'line',
+        plugins: [lastValuePlugin],
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Posts',
+                data: values,
+                borderColor: '#A78BFA',
+                backgroundColor: gradient,
+                fill: true,
+                tension: 0.3,
+                borderWidth: 3,
+                pointRadius: 5,
+                pointBackgroundColor: '#A78BFA',
+                pointBorderColor: '#0B0F1A',
+                pointBorderWidth: 2,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: { top: 30 } },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                    borderColor: 'rgba(139, 92, 246, 0.4)',
+                    borderWidth: 1,
+                    titleFont: { family: 'Inter', size: 12, weight: '600' },
+                    bodyFont: { family: 'Inter', size: 13, weight: '700' },
+                    padding: 12,
+                    cornerRadius: 10,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(item) { return item.raw.toLocaleString('fr-FR') + ' posts'; }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#475569', font: { size: 11, weight: '600' } }
+                },
+                y: {
+                    min: 0,
+                    grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false },
+                    ticks: { color: '#475569', font: { size: 11, weight: '500' }, callback: function(v) { return v.toLocaleString('fr-FR'); } }
+                }
+            }
+        }
+    });
+}
+
+// ═══ CHART: Views Delta (per hour) ═══
+function renderViewsDeltaChart(snaps) {
+    var ctx = document.getElementById('viewsDeltaChart').getContext('2d');
+    var daily = getHourlyDeltas(snaps);
+    var labels = daily.map(function(d) { return d.label; });
+    var values = daily.map(function(d) { return d.views; });
+    var totals = daily.map(function(d) { return d.totalViews; });
+
+    var gradient = ctx.createLinearGradient(0, 0, 0, 260);
+    gradient.addColorStop(0, 'rgba(6, 182, 212, 0.3)');
+    gradient.addColorStop(1, 'rgba(6, 182, 212, 0)');
+
+    if (window._vdc) window._vdc.destroy();
+    window._vdc = new Chart(ctx, {
+        type: 'line',
+        plugins: [lastValuePlugin],
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Vues gagnees',
+                data: values,
+                borderColor: '#06B6D4',
+                backgroundColor: gradient,
+                fill: true,
+                tension: 0.3,
+                spanGaps: true,
+                borderWidth: 3,
+                pointRadius: function(ctx) { return ctx.raw === null ? 0 : 6; },
+                pointBackgroundColor: '#06B6D4',
+                pointBorderColor: '#0B0F1A',
+                pointBorderWidth: 2,
+                pointHoverRadius: 9,
+                _totals: totals
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: { top: 30 } },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                    borderColor: 'rgba(6, 182, 212, 0.4)',
+                    borderWidth: 1,
+                    titleFont: { family: 'Inter', size: 12, weight: '600' },
+                    bodyFont: { family: 'Inter', size: 13, weight: '700' },
+                    padding: 12,
+                    cornerRadius: 10,
+                    displayColors: false,
+                    callbacks: {
+                        title: function(items) { return items[0].label; },
+                        label: function(item) {
+                            var delta = item.raw;
+                            var total = item.dataset._totals[item.dataIndex];
+                            return '+' + delta.toLocaleString('fr-FR') + ' vues (total: ' + total.toLocaleString('fr-FR') + ')';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#475569', font: { size: 10, weight: '600' }, maxRotation: 45 }
+                },
+                y: {
+                    min: 0,
+                    grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false },
+                    ticks: { color: '#475569', font: { size: 11, weight: '500' }, callback: function(v) { return v >= 1000000 ? (v/1000000).toFixed(1) + 'M' : v >= 1000 ? Math.round(v/1000) + 'K' : v; } }
+                }
+            }
+        }
+    });
+}
+
+// ═══ CHART: Posts Delta (per hour) ═══
+function renderPostsDeltaChart(snaps) {
+    var ctx = document.getElementById('postsDeltaChart').getContext('2d');
+    var daily = getHourlyDeltas(snaps);
+    var labels = daily.map(function(d) { return d.label; });
+    var values = daily.map(function(d) { return d.videos; });
+    var totals = daily.map(function(d) { return d.totalVideos; });
+
+    var gradient = ctx.createLinearGradient(0, 0, 0, 260);
+    gradient.addColorStop(0, 'rgba(245, 158, 11, 0.3)');
+    gradient.addColorStop(1, 'rgba(245, 158, 11, 0)');
+
+    if (window._pdc) window._pdc.destroy();
+    window._pdc = new Chart(ctx, {
+        type: 'line',
+        plugins: [lastValuePlugin],
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Posts gagnes',
+                data: values,
+                borderColor: '#F59E0B',
+                backgroundColor: gradient,
+                fill: true,
+                tension: 0.3,
+                spanGaps: true,
+                borderWidth: 3,
+                pointRadius: function(ctx) { return ctx.raw === null ? 0 : 6; },
+                pointBackgroundColor: '#F59E0B',
+                pointBorderColor: '#0B0F1A',
+                pointBorderWidth: 2,
+                pointHoverRadius: 9,
+                _totals: totals
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: { top: 30 } },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                    borderColor: 'rgba(245, 158, 11, 0.4)',
+                    borderWidth: 1,
+                    titleFont: { family: 'Inter', size: 12, weight: '600' },
+                    bodyFont: { family: 'Inter', size: 13, weight: '700' },
+                    padding: 12,
+                    cornerRadius: 10,
+                    displayColors: false,
+                    callbacks: {
+                        title: function(items) { return items[0].label; },
+                        label: function(item) {
+                            var delta = item.raw;
+                            var total = item.dataset._totals[item.dataIndex];
+                            return '+' + delta.toLocaleString('fr-FR') + ' posts (total: ' + total.toLocaleString('fr-FR') + ')';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#475569', font: { size: 10, weight: '600' }, maxRotation: 45 }
+                },
+                y: {
+                    min: 0,
+                    grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false },
+                    ticks: { color: '#475569', font: { size: 11, weight: '500' }, callback: function(v) { return v.toLocaleString('fr-FR'); } }
+                }
+            }
+        }
+    });
+}
+
+// ═══ INIT ═══
+checkAuth();
+</script>
+
+</body>
+</html>
