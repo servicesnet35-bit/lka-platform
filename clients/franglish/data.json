@@ -6,17 +6,43 @@
     "name": "Franglish",
     "photo": "franglish-photo.jpg"
   },
-  "hashtags": ["franglish", "franglishstory"],
+  "hashtags": [
+    "franglish",
+    "franglishstory"
+  ],
   "snapshots": [
     {
       "timestamp": "2026-03-04T05:55:00Z",
-      "franglish": { "views": 1560101219, "videos": 59302 },
-      "franglishstory": { "views": 1303, "videos": 7 }
+      "franglish": {
+        "views": 1560101219,
+        "videos": 59302
+      },
+      "franglishstory": {
+        "views": 1303,
+        "videos": 7
+      }
     },
     {
       "timestamp": "2026-03-04T22:07:46Z",
-      "franglish": { "views": 1560183658, "videos": 59304 },
-      "franglishstory": { "views": 1769, "videos": 9 }
+      "franglish": {
+        "views": 1560183658,
+        "videos": 59304
+      },
+      "franglishstory": {
+        "views": 1769,
+        "videos": 9
+      }
+    },
+    {
+      "timestamp": "2026-03-04T23:19:20Z",
+      "franglish": {
+        "views": 1556156218,
+        "videos": 59010
+      },
+      "franglishstory": {
+        "views": 3192,
+        "videos": 17
+      }
     }
   ]
 }
