@@ -1121,8 +1121,14 @@ function renderDashboard(data) {
     var displayViews = campaignViews;
     var displayVideos = campaignVideos;
     if (c.deltaFromBaseline) {
-        displayViews = campaignViews - getViews(baseline, c);
-        displayVideos = campaignVideos - getVideos(baseline, c);
+        // Monotonic: prendre le max views (TikTok cache peut baisser)
+        var maxViews = getViews(baseline, c);
+        for (var mi = 0; mi < snaps.length; mi++) {
+            var sv = getViews(snaps[mi], c);
+            if (sv > maxViews) maxViews = sv;
+        }
+        displayViews = Math.max(0, maxViews - getViews(baseline, c));
+        displayVideos = campaignVideos;
     }
 
     // KPI 1: Vues campagne
@@ -1224,7 +1230,7 @@ function getDailyTotals(snaps) {
         var v = getViews(days[day], c);
         var vid = getVideos(days[day], c);
         if (c.deltaFromBaseline) {
-            v = v - getViews(baseline, c);
+            v = Math.max(0, v - getViews(baseline, c));
             // Posts restent en absolu (viennent de postsKey = #franglishstory)
         }
         return {
@@ -1270,7 +1276,7 @@ function getHourlyDeltas(snaps) {
         var totalVid = getVideos(curr, c);
         if (c.deltaFromBaseline) {
             var baseline = snaps[0];
-            totalV = totalV - getViews(baseline, c);
+            totalV = Math.max(0, totalV - getViews(baseline, c));
             // Posts restent en absolu (postsKey = #franglishstory)
         }
         result.push({
