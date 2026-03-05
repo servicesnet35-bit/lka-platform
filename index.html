@@ -1281,8 +1281,8 @@ function getHourlyDeltas(snaps) {
         }
         result.push({
             label: label,
-            views: getViews(curr, c) - getViews(prev, c),
-            videos: getVideos(curr, c) - getVideos(prev, c),
+            views: Math.max(0, getViews(curr, c) - getViews(prev, c)),
+            videos: Math.max(0, getVideos(curr, c) - getVideos(prev, c)),
             totalViews: totalV,
             totalVideos: totalVid
         });
