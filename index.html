@@ -799,27 +799,6 @@ body::after {
         </div>
     </div>
 
-    <!-- Charts — Par heure -->
-    <div class="charts-row">
-        <div class="chart-card fade-in fade-in-d7">
-            <div class="chart-title">
-                Vues par heure
-                <span>Actualisation toutes les heures</span>
-            </div>
-            <div class="chart-wrap">
-                <canvas id="viewsDeltaChart"></canvas>
-            </div>
-        </div>
-        <div class="chart-card fade-in fade-in-d8">
-            <div class="chart-title">
-                Posts par heure
-                <span>Actualisation toutes les heures</span>
-            </div>
-            <div class="chart-wrap">
-                <canvas id="postsDeltaChart"></canvas>
-            </div>
-        </div>
-    </div>
 
     <!-- Footer -->
     <div class="dash-footer fade-in fade-in-d8" id="dashFooter"></div>
@@ -1179,8 +1158,6 @@ function renderDashboard(data) {
     // Render all charts
     renderViewsChart(snaps);
     renderPostsChart(snaps);
-    renderViewsDeltaChart(snaps);
-    renderPostsDeltaChart(snaps);
 }
 
 // ═══ CHART PLUGIN — Last value label ═══
