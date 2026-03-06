@@ -850,6 +850,20 @@ var CLIENTS = {
             { platform: 'YouTube', url: 'https://www.youtube.com/@Franglish', stat: 'Franglish', icon: 'youtube' }
         ]
     },
+    'you2026': {
+        id: 'you',
+        name: 'You',
+        campaignName: 'CLIP2YOU',
+        hashtag: '#clip2you',
+        startDate: '2026-03-06',
+        dataPath: 'clients/you/data.json',
+        photo: 'clients/you/you-photo.jpg',
+        dataFormat: 'simple',
+        deltaFromBaseline: true,
+        socials: [
+            { platform: 'TikTok', url: 'https://www.tiktok.com/@youmusic_off', stat: '@youmusic_off', icon: 'tiktok' }
+        ]
+    },
     'lka-admin': {
         admin: true
     }
@@ -1115,8 +1129,15 @@ function renderDashboard(data) {
     document.getElementById('kpiViewsDelta').textContent = c.deltaFromBaseline ? 'vues depuis le lancement' : 'vues cumul\u00e9es';
     document.getElementById('kpiViewsDelta').className = 'kpi-delta neutral';
 
-    // KPI 2: Clips campagne (pour deltaFromBaseline, les posts viennent de postsKey = valeur absolue)
-    var displayClips = c.deltaFromBaseline ? campaignVideos : displayVideos;
+    // KPI 2: Clips campagne
+    var displayClips;
+    if (c.deltaFromBaseline && c.postsKey) {
+        displayClips = campaignVideos; // postsKey = hashtag campagne, valeur absolue
+    } else if (c.deltaFromBaseline) {
+        displayClips = Math.max(0, campaignVideos - getVideos(baseline, c)); // delta posts
+    } else {
+        displayClips = displayVideos;
+    }
     document.getElementById('kpiClips').textContent = displayClips.toLocaleString('fr-FR');
     document.getElementById('kpiClipsDelta').textContent = 'clips au total';
     document.getElementById('kpiClipsDelta').className = 'kpi-delta neutral';
@@ -1150,7 +1171,7 @@ function renderDashboard(data) {
     document.getElementById('heatLabel').textContent = heat <= 3 ? 'Froid' : heat <= 6 ? 'Ti\u00e8de' : 'Chaud';
 
     // KPI 4: Average views per clip
-    var avgClips = campaignVideos > 0 ? Math.round(displayViews / (c.deltaFromBaseline ? campaignVideos : displayVideos)) : 0;
+    var avgClips = displayClips > 0 ? Math.round(displayViews / displayClips) : 0;
     document.getElementById('kpi4Value').textContent = avgClips.toLocaleString('fr-FR');
     document.getElementById('kpi4Delta').textContent = 'moyenne par clip';
     document.getElementById('kpi4Delta').className = 'kpi-delta neutral';

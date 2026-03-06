@@ -15,6 +15,12 @@ const CLIENTS = [
         dataFile: 'clients/franglish/data.json',
         hashtags: ['franglish', 'franglishstory'],
         format: 'multi' // { timestamp, franglish: {views, videos}, franglishstory: {views, videos} }
+    },
+    {
+        name: 'You',
+        dataFile: 'clients/you/data.json',
+        hashtags: ['clip2you'],
+        format: 'simple' // { timestamp, views, videos }
     }
 ];
 

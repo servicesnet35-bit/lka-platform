@@ -1,0 +1,19 @@
+{
+  "client": "You",
+  "campaignName": "CLIP2YOU",
+  "campaignStartDate": "2026-03-06",
+  "profile": {
+    "name": "You",
+    "photo": "you-photo.jpg"
+  },
+  "hashtags": [
+    "clip2you"
+  ],
+  "snapshots": [
+    {
+      "timestamp": "2026-03-06T18:30:00Z",
+      "views": 4410919,
+      "videos": 184
+    }
+  ]
+}
