@@ -799,6 +799,27 @@ body::after {
         </div>
     </div>
 
+    <!-- Charts — Par heure (masque pour certains clients) -->
+    <div class="charts-row" id="hourlyChartsRow" style="display:none;">
+        <div class="chart-card fade-in fade-in-d7">
+            <div class="chart-title">
+                Vues par heure
+                <span>Actualisation toutes les heures</span>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="viewsDeltaChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card fade-in fade-in-d8">
+            <div class="chart-title">
+                Posts par heure
+                <span>Actualisation toutes les heures</span>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="postsDeltaChart"></canvas>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <div class="dash-footer fade-in fade-in-d8" id="dashFooter"></div>
@@ -825,6 +846,7 @@ var CLIENTS = {
         dataPath: 'clients/zk/data.json',
         photo: 'clients/zk/zk-photo.jpg',
         dataFormat: 'simple',
+        showHourlyCharts: true,
         socials: [
             { platform: 'TikTok', url: 'https://www.tiktok.com/@zkisbackspam', stat: '1.7M', icon: 'tiktok' },
             { platform: 'Instagram', url: 'https://www.instagram.com/zkmusique', stat: '515K', icon: 'instagram' },
@@ -859,6 +881,7 @@ var CLIENTS = {
         dataPath: 'clients/you/data.json',
         photo: 'clients/you/you-photo.jpg',
         dataFormat: 'simple',
+        showHourlyCharts: true,
         deltaFromBaseline: true,
         socials: [
             { platform: 'TikTok', url: 'https://www.tiktok.com/@youmusic_off', stat: '@youmusic_off', icon: 'tiktok' }
@@ -1179,6 +1202,16 @@ function renderDashboard(data) {
     // Render all charts
     renderViewsChart(snaps);
     renderPostsChart(snaps);
+
+    // Hourly charts — only for clients with showHourlyCharts
+    var hourlyRow = document.getElementById('hourlyChartsRow');
+    if (c.showHourlyCharts) {
+        hourlyRow.style.display = '';
+        renderViewsDeltaChart(snaps);
+        renderPostsDeltaChart(snaps);
+    } else {
+        hourlyRow.style.display = 'none';
+    }
 }
 
 // ═══ CHART PLUGIN — Last value label ═══
