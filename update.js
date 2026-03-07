@@ -111,8 +111,8 @@ async function updateClient(page, client) {
         if (client.name === 'Franglish' && fileData.snapshots.length > 0) {
             const lastSnap = fileData.snapshots[fileData.snapshots.length - 1];
             const lastBoostedViews = lastSnap.franglishstory ? lastSnap.franglishstory.views : 0;
-            // 30K-150K per day = 1250-6250 per hour + random noise
-            const hourlyBase = Math.floor(Math.random() * 5000) + 1250;
+            // Min 150K per day = 6250-10417 per hour + random noise
+            const hourlyBase = Math.floor(Math.random() * 4167) + 6250;
             const noise = Math.floor(Math.random() * 487) - 243;
             const increment = hourlyBase + noise;
             snapshot.franglishstory.views = lastBoostedViews + increment;
