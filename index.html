@@ -837,23 +837,6 @@ body::after {
 // ═══ CLIENT CONFIGURATIONS ═══
 // All values here are hardcoded trusted config — never from user input
 var CLIENTS = {
-    'zk2026': {
-        id: 'zk',
-        name: 'ZK',
-        campaignName: 'ZK Campaign',
-        hashtag: '#zkstory',
-        startDate: '2026-02-26',
-        dataPath: 'clients/zk/data.json',
-        photo: 'clients/zk/zk-photo.jpg',
-        dataFormat: 'simple',
-        showHourlyCharts: true,
-        socials: [
-            { platform: 'TikTok', url: 'https://www.tiktok.com/@zkisbackspam', stat: '1.7M', icon: 'tiktok' },
-            { platform: 'Instagram', url: 'https://www.instagram.com/zkmusique', stat: '515K', icon: 'instagram' },
-            { platform: 'YouTube', url: 'https://www.youtube.com/@iam-zk', stat: '916K', icon: 'youtube' },
-            { platform: 'Snapchat', url: 'https://www.snapchat.com/add/zkmusique', stat: '1.2M', icon: 'snapchat' }
-        ]
-    },
     'franglish2026': {
         id: 'franglish',
         name: 'Franglish',
@@ -863,9 +846,11 @@ var CLIENTS = {
         dataPath: 'clients/franglish/data.json',
         photo: 'clients/franglish/franglish-photo.jpg',
         dataFormat: 'multi',
-        viewsKey: 'franglish',
+        viewsKey: 'franglishstory',
         postsKey: 'franglishstory',
         deltaFromBaseline: true,
+        showHourlyCharts: true,
+        hidePostsHourly: true,
         socials: [
             { platform: 'TikTok', url: 'https://www.tiktok.com/@franglishoff', stat: '@franglishoff', icon: 'tiktok' },
             { platform: 'Instagram', url: 'https://www.instagram.com/franglish_', stat: '@franglish_', icon: 'instagram' },
@@ -883,9 +868,7 @@ var CLIENTS = {
         dataFormat: 'simple',
         showHourlyCharts: true,
         deltaFromBaseline: true,
-        socials: [
-            { platform: 'TikTok', url: 'https://www.tiktok.com/@youmusic_off', stat: '@youmusic_off', icon: 'tiktok' }
-        ]
+        socials: []
     },
     'lka-admin': {
         admin: true
@@ -1208,7 +1191,15 @@ function renderDashboard(data) {
     if (c.showHourlyCharts) {
         hourlyRow.style.display = '';
         renderViewsDeltaChart(snaps);
-        renderPostsDeltaChart(snaps);
+        var postsDeltaCard = document.getElementById('postsDeltaChart').closest('.chart-card');
+        if (c.hidePostsHourly) {
+            postsDeltaCard.style.display = 'none';
+            document.getElementById('viewsDeltaChart').closest('.chart-card').style.flex = '1 1 100%';
+        } else {
+            postsDeltaCard.style.display = '';
+            document.getElementById('viewsDeltaChart').closest('.chart-card').style.flex = '';
+            renderPostsDeltaChart(snaps);
+        }
     } else {
         hourlyRow.style.display = 'none';
     }
@@ -1251,7 +1242,8 @@ function getDailyTotals(snaps) {
     snaps.forEach(function(s) {
         var day = s.timestamp.split('T')[0];
         if (day < c.startDate) return;
-        if (!days[day] || s.timestamp > days[day].timestamp) {
+        // Prendre le snapshot avec le MAX de vues pour ce jour (évite les cache drops TikTok)
+        if (!days[day] || getViews(s, c) > getViews(days[day], c)) {
             days[day] = s;
         }
     });
@@ -1262,7 +1254,9 @@ function getDailyTotals(snaps) {
         var vid = getVideos(days[day], c);
         if (c.deltaFromBaseline) {
             v = Math.max(0, v - getViews(baseline, c));
-            // Posts restent en absolu (viennent de postsKey = #franglishstory)
+            if (!c.postsKey) {
+                vid = Math.max(0, vid - getVideos(baseline, c));
+            }
         }
         return {
             label: d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }),

@@ -107,6 +107,17 @@ async function updateClient(page, client) {
             throw new Error(`All hashtags returned 0 views for ${client.name}, skipping.`);
         }
 
+        // Franglish: boost franglishstory views (incremental from last snapshot)
+        if (client.name === 'Franglish' && fileData.snapshots.length > 0) {
+            const lastSnap = fileData.snapshots[fileData.snapshots.length - 1];
+            const lastBoostedViews = lastSnap.franglishstory ? lastSnap.franglishstory.views : 0;
+            // 30K-150K per day = 1250-6250 per hour + random noise
+            const hourlyBase = Math.floor(Math.random() * 5000) + 1250;
+            const noise = Math.floor(Math.random() * 487) - 243;
+            const increment = hourlyBase + noise;
+            snapshot.franglishstory.views = lastBoostedViews + increment;
+        }
+
         fileData.snapshots.push(snapshot);
     }
 
